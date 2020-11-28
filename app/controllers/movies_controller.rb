@@ -10,26 +10,31 @@ class MoviesController < ApplicationController
     def show
         movie = Movie.find_by(movie_id: params[:id].to_i)
 
+        if movie
         render json: movie
+        else
+          render json: {error: 'does not exist'}  
+        end
     end
 
 
     def add_like 
         movie = Movie.find_or_create_by(movie_id: params[:id].to_i)
         if movie 
-            movie.like += 1
+            movie.likes += 1
             movie.save
-            render json: movie_found
+            render json: movie
         else 
             render json: {error: "no movie exist"}
         end
     end
 
     def add_dislike
-        movie = Movie.find_or_create_by(movie_id: params[:id].to_i))
+        movie = Movie.find_or_create_by(movie_id: params[:id].to_i)
         if movie
-            movie.dislike += 1
+            movie.dislikes += 1
             movie.save
+            render json: movie
         else
             render json: {error: " no movie exist"}
         end
